@@ -30,8 +30,8 @@ $Script:Date                           = $Time.GetDateTimeFormats()[19]
 $Script:DejaRootPath                   = Join-Path $Script:DevelopmentRoot "DejaInsight"
 $Script:DejaLibsPath                   = Join-Path $Script:DejaRootPath "lib"
 $Script:DejaIncsPath                   = Join-Path $Script:DejaRootPath "inc"
-$Script:BuildAutomation                = Join-Path $Script:DevelopmentRoot "automation.build.bat"
-
+$Script:BuildAutomation                = Join-Path $Script:DevelopmentRoot "BuildAutomation"
+$Script:BuildAutomationRoot                = $PSScriptRoot
 
 Write-Host "===============================================================================" -f DarkRed
 Write-Host "CONFIGURATION of DEVELOPMENT ENVIRONMENT for BUILD AUTOMATION " -f DarkYellow;
@@ -41,6 +41,7 @@ Write-Host "Current Script   `t" -NoNewLine -f DarkYellow;  Write-Host "$Script:
 
 Write-Host "Development Root `t" -NoNewLine -f DarkYellow;  Write-Host "$Script:DevelopmentRoot" -f Gray 
 Write-Host "Build Automation `t" -NoNewLine -f DarkYellow;  Write-Host "$Script:BuildAutomation" -f Gray 
+Write-Host "Build Automation `t" -NoNewLine -f DarkYellow;  Write-Host "$Script:BuildAutomationRoot" -f Gray 
 Write-Host "Deja Root Path   `t" -NoNewLine -f DarkYellow;  Write-Host "$Script:DejaRootPath" -f Gray 
 Write-Host "Deja Libs Path   `t" -NoNewLine -f DarkYellow;  Write-Host "$Script:DejaLibsPath" -f Gray 
 Write-Host "Deja Incs Path   `t" -NoNewLine -f DarkYellow;  Write-Host "$Script:DejaIncsPath" -f Gray 
@@ -50,8 +51,8 @@ Write-Host "====================================================================
 Write-Host "SETTING REGISTRY ENTRIES" -f DarkYellow;
 Write-Host "===============================================================================" -f DarkRed   
 
-$Script:RegPathAuto='HKCU:\SOFTWARE\CodeCastor\development\build-automation'
-$Script:RegPathDeja='HKCU:\SOFTWARE\CodeCastor\development\dejainsight'
+$Script:RegPathAuto="$ENV:OrganizationHKCU\development\build-automation"
+$Script:RegPathDeja="$ENV:OrganizationHKCU\development\dejainsight"
 Write-Host "[REGISTRY] " -f DarkRed -NonewLine
 Write-Host " build-automation" -f DarkYellow
 if((Get-Item -Path $Script:RegPathAuto -ErrorAction ignore) -eq $null){

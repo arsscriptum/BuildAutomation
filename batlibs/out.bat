@@ -9,11 +9,97 @@ goto :EOF
 ::   codecastor - made in quebec 2020 <codecastor@icloud.com>
 :: ==============================================================================
 
+:: ===========
+:: status
+:__out_status
+    call :write "[33m%~1[0m"
+    goto :eof
 
 :: ==============================================================================
 ::   My display functions using colors like in 1989
 :: ==============================================================================
 :: ===========
+:: blacker than black
+:__out_n_d_blk
+    call :write "[30m%~1[0m"
+    goto :eof
+:: ===========
+:: dark red
+:__out_n_d_red
+    call :write "[31m%~1[0m"
+    goto :eof
+:: ===========
+:: dark green
+:__out_n_d_grn
+    call :write "[32m%~1[0m"
+    goto :eof
+:: ===========
+:: dark yellow
+:__out_n_d_yel
+    call :write "[33m%~1[0m"
+    goto :eof
+:: ===========
+:: dark blue
+:__out_n_d_blu
+    call :write "[34m%~1[0m"
+    goto :eof
+:: ===========
+:: dark magena
+:__out_n_d_mag
+    call :write "[35m%~1[0m"
+    goto :eof
+:: ===========
+:: dark cyan
+:__out_n_d_cya
+    call :write "[36m%~1[0m"
+    goto :eof
+:: ===========
+:: dark white, bit darker than gray
+:__out_n_d_whi
+    call :write "[37m%~1[0m"
+    goto :eof
+
+:: ===========
+:: light gray
+:__out_n_l_gry
+    call :write "[90m%~1[0m"
+    goto :eof
+:: ===========
+:: light red
+:__out_n_l_red
+    call :write "[91m%~1[0m"
+    goto :eof
+:: ===========
+:: light green
+:__out_n_l_grn
+    call :write "[92m%~1[0m"
+    goto :eof
+:: ===========
+:: light yellow
+:__out_n_l_yel
+    call :write "[93m%~1[0m"
+    goto :eof
+:: ===========
+:: light blue
+:__out_n_l_blu
+    call :write "[94m%~1[0m"
+    goto :eof
+:: ===========
+:: light magenta
+:__out_n_l_mag
+    call :write "[95m%~1[0m"
+    goto :eof
+:: ===========
+:: light cyan
+:__out_n_l_cya
+    call :write "[96m%~1[0m"
+    goto :eof
+:: ===========
+:: white
+:__out_n_l_whi
+    call :write "[97m%~1[0m"
+    goto :eof
+
 :: blacker than black
 :__out_d_blk
     echo [30m%~1[0m
@@ -107,6 +193,18 @@ goto :EOF
     echo [4m%~1[0m
     goto :eof
 
+:: ===========
+:: misc: underline
+:__out_underline_blu
+    echo [4m[94m%~1[0m[0m
+    goto :eof
+
+:: ===========
+:: misc: underline
+:__out_underline_red
+    echo [4m[91m%~1[0m[0m
+    goto :eof
+
 :: ==============================================================================
 ::   Test colors..
 :: ==============================================================================
@@ -192,6 +290,9 @@ goto :EOF
       <nul set /p "=!%~1!"
       exit /b
     )
+    set string=%~1
+    set string=%string:"=%
+    set %~1=%string%
     >"%$write.temp%_1.txt" (echo !str!!$write.sub!)
     copy "%$write.temp%_1.txt" /a "%$write.temp%_2.txt" /b >nul
     type "%$write.temp%_2.txt"

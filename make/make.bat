@@ -5,7 +5,7 @@ setlocal EnableDelayedExpansion
 :: 
 ::   make.bat
 ::
-::   This script is part of codecastor build wrappers.
+::   This script is part of ars scriptum build wrappers.
 :: 
 ::   Example:  To build in Debug, x64:
 ::             .\make.bat /t Build /c Debug /p x64
@@ -13,14 +13,14 @@ setlocal EnableDelayedExpansion
 ::   VERSION:  1.0.1
 ::
 :: ==============================================================================
-::   codecastor - made in quebec 2020 <codecastor@icloud.com>
+::   codecastor - made in quebec 2020 <arsscriptum@icloud.com>
 :: ==============================================================================
 
 goto :init
 
 :header
     echo. %__script_name% v%__script_version%
-    echo.    This script is part of cybercastor build wrappers.
+    echo.    This script is part of ars scriptum build wrappers.
     echo.
     goto :eof
 
@@ -68,7 +68,7 @@ goto :init
     set "__path_cd=%cd%"
 
     set "__scripts_root=%AutomationScriptsRoot%"
-    call :read_script_root codecastor\development\build-automation  BuildAutomation
+    call :read_script_root development\build-automation  BuildAutomation
     echo Read scripts root from registry: %__scripts_root%
 
     set "__iniconfig_file="
@@ -219,7 +219,8 @@ goto :init
     goto :eof
 
 :read_script_root
-    for /f "tokens=2,*" %%A in ('REG.exe query HKCU\SOFTWARE\%1 /v %2') do (
+    set regpath=%OrganizationHKCU::=%
+    for /f "tokens=2,*" %%A in ('REG.exe query %regpath%\%1 /v %2') do (
             set "__scripts_root=%%B"
         )
     goto :eof
