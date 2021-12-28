@@ -3,59 +3,151 @@ setlocal EnableDelayedExpansion
 
 :: ==============================================================================
 :: 
-::      make.bat
+::      Build.bat
 ::
-::   This script is part of codecastor build wrappers.
-:: 
-::   Example:  To build in Debug, x64:
-::             .\make.bat /t Build /c Debug /p x64
+::      Build different configuration of the app
 ::
 :: ==============================================================================
-::   codecastor - made in quebec 2020 <codecastor@icloud.com>
+::   arsccriptum - made in quebec 2020 <guillaumeplante.qc@gmail.com>
 :: ==============================================================================
 
 goto :init
 
 :init
+    set "__scripts_root=%AutomationScriptsRoot%"
+    call :read_script_root development\build-automation  BuildAutomation
     set "__script_file=%~0"
+    set "__target=%~1"
     set "__script_path=%~dp0"
-    set "__makefile=%__script_path%\make.bat"
-    set "__lib_out=%__script_path%batlibs\out.bat"
-    set "__lib_out=%__script_path%batlibs\out.bat"
-    set "__ini_agent=%__script_path%cfg\agent.ini"
-    set "__ini_ctrl=%__script_path%cfg\svcctrl.ini"
+    set "__makefile=%__scripts_root%\make\make.bat"
+    set "__lib_date=%__scripts_root%\batlibs\date.bat"
+    set "__lib_out=%__scripts_root%\batlibs\out.bat"
+    ::*** This is the important line ***
+    set "__build_cfg=%__script_path%buildcfg.ini"
     set "__build_cancelled=0"
-    goto :build_all_debug
+    goto :validate
 
-:: ==============================================================================
-::   Build an external library, located in /externals/... corelib, netlib
-:: ==============================================================================
-:build_external
-    set lib=%1
-    set config=%2
-    set platform=%3
-    pushd ..\..\externals\%lib%\scripts
-    call make.bat /t Build /c %config% /p %platform%
-    popd
+
+:header
+    echo. %__script_name% v%__script_version%
+    echo.    This script is part of codecastor build wrappers.
+    echo.
     goto :eof
 
+:header_err
+    echo.**************************************************
+    echo.This script is part of codecastor build wrappers.
+    echo.**************************************************
+    echo.
+    echo. YOU NEED TO HAVE THE BuildAutomation Scripts setup on you system...
+    echo. https://github.com/codecastor/BuildAutomation
+    goto :eof
+
+
+:read_script_root
+    set regpath=%OrganizationHKCU::=%
+    for /f "tokens=2,*" %%A in ('REG.exe query %regpath%\%1 /v %2') do (
+            set "__scripts_root=%%B"
+        )
+    goto :eof
+
+:validate
+    if not defined __scripts_root          call :header_err && call :error_missing_path __scripts_root & goto :eof
+    if not exist %__makefile%  call :error_missing_script "%__makefile%" & goto :eof
+    if not exist %__lib_date%  call :error_missing_script "%__lib_date%" & goto :eof
+    if not exist %__lib_out%  call :error_missing_script "%__lib_out%" & goto :eof
+    if not exist %__build_cfg%  call :error_missing_script "%__build_cfg%" & goto :eof
+
+    goto :prebuild_header
+
+
+:prebuild_header
+    call %__lib_date% :getbuilddate
+    call %__lib_out% :__out_d_red " ======================================================================="
+    call %__lib_out% :__out_l_red " Compilation started for %cd%  %__target%"  
+    call %__lib_out% :__out_d_red " ======================================================================="
+    call :build
+    goto :eof
+
+
 :: ==============================================================================
-::   Build main project files: agent, svcctrl
+::   call make
 :: ==============================================================================
-:build_projects
+:call_make_build
     set config=%1
     set platform=%2
-    call %__makefile% /i %__ini_agent% /t Build /c %config% /p %platform%
-    call %__makefile% /i %__ini_ctrl% /t Build /c %config% /p %platform%
+    call %__makefile% /v /i %__build_cfg% /t Build /c %config% /p %platform%
+    goto :finished
+
+:call_make_build_export
+    set config=%1
+    set platform=%2
+    set export_path=%3
+    call %__makefile% /v /i %__build_cfg% /t Build /c %config% /p %platform% /x %export_path%
     goto :finished
 
 :: ==============================================================================
-::   Build everything
+::   Build static
 :: ==============================================================================
-:build_all_debug
-    call :build_external corelib Debug x86
-    call :build_external netlib Debug x86
-    call :build_projects Debug x86
+:build_x86
+    call :call_make_build Debug x86
+    call :call_make_build Release x86
+    goto :eof
+
+:: ==============================================================================
+::   Build x64
+:: ==============================================================================
+:build_x64
+    ::call :call_make_build Debug x64
+    call :call_make_build_export Release x64 %EXPORT_PATH%
+    goto :eof
+
+:: ==============================================================================
+::   clean all
+:: ==============================================================================
+:clean
+    call %__makefile% /v /i %__build_cfg% /t Clean /c Debug /p x86
+    call %__makefile% /v /i %__build_cfg% /t Clean /c Release /p x86
+    call %__makefile% /v /i %__build_cfg% /t Clean /c Debug /p x64
+    call %__makefile% /v /i %__build_cfg% /t Clean /c Release /p x64
+    goto :eof
+
+
+:: ==============================================================================
+::   Build
+:: ==============================================================================
+:build
+	echo "%__target%"
+	if "%__target%" == "clean" (
+		call :clean
+		goto :finished
+		)
+    if "%__target%" == "rebuild" (
+		call :clean
+		)
+    
+    ::call :build_x86
+    call :build_x64
+    goto :finished
+
+
+:error_missing_path
+    echo.
+    echo   Error
+    echo    Missing path: %~1
+    echo.
+    goto :eof
+
+
+
+:error_missing_script
+    echo.
+    echo    Error
+    echo    Missing bat script: %~1
+    echo.
+    goto :eof
+
+
 
 :finished
-    call %__lib_out% :__out_d_grn "*   *   *   *   *   build complete   *   *   *   *   *"
+    call %__lib_out% :__out_d_grn "Build complete"

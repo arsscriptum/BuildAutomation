@@ -31,8 +31,6 @@ goto :init
 	if [%5]==[] set "__target_opt=/t:%__target%"
 
 	set "__compiler=%__script_path%run_compiler.bat"
-    set "__lib_out=%__script_path%out.bat"
-    set "__lib_date=%__script_path%date.bat"
     goto :validate
 
 :validate

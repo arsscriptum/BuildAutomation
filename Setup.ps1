@@ -29,7 +29,7 @@ $Script:Time                           = Get-Date
 $Script:Date                           = $Time.GetDateTimeFormats()[19]
 $Script:DejaRootPath                   = Join-Path $Script:DevelopmentRoot "DejaInsight"
 $Script:DejaLibsPath                   = Join-Path $Script:DejaRootPath "lib"
-$Script:DejaIncsPath                   = Join-Path $Script:DejaRootPath "inc"
+$Script:DejaIncsPath                   = Join-Path $Script:DejaRootPath "include"
 $Script:BuildAutomation                = Join-Path $Script:DevelopmentRoot "BuildAutomation"
 $Script:BuildAutomationRoot                = $PSScriptRoot
 

@@ -73,6 +73,7 @@ goto :init
 
     set "__iniconfig_file="
     set "__log_path=%__script_path%log"
+    set "__bin_path=%cd%\bin"
     set __log_file=""
     
     set "__lib_out=%__scripts_root%\batlibs\out.bat"
@@ -106,6 +107,10 @@ goto :init
     if /i "%~1"=="/p"         set "__platform=%~2"   & shift & shift & goto :parse
     if /i "%~1"=="--platform" set "__platform=%~2"   & shift & shift & goto :parse
 
+    if /i "%~1"=="-x"         set "__exportpath=%~2"   & shift & shift & goto :parse
+    if /i "%~1"=="/x"         set "__exportpath=%~2"   & shift & shift & goto :parse
+    if /i "%~1"=="--export"   set "__exportpath=%~2"   & shift & shift & goto :parse
+
     if /i "%~1"=="-c"         set "__configuration=%~2"   & shift & shift & goto :parse
     if /i "%~1"=="/c"         set "__configuration=%~2"   & shift & shift & goto :parse
     if /i "%~1"=="--config"   set "__configuration=%~2"   & shift & shift & goto :parse
@@ -136,6 +141,7 @@ goto :init
     FOR /F "tokens=1,2 delims==" %%i in ('findstr /I "PROJECT_NAME" %__iniconfig_file%')     do set PROJECT_NAME=%%j
     FOR /F "tokens=1,2 delims==" %%i in ('findstr /I "PROJECT_FILE" %__iniconfig_file%')     do set PROJECT_FILE=%%j
     FOR /F "tokens=1,2 delims==" %%i in ('findstr /I "PROJECT_PATH" %__iniconfig_file%')     do set PROJECT_PATH=%%j  
+    FOR /F "tokens=1,2 delims==" %%i in ('findstr /I "EXPORT_PATH" %__iniconfig_file%')      do set EXPORT_PATH=%%j  
     FOR /F "tokens=1,2 delims==" %%i in ('findstr /I "COMPILE_SCRIPT" %__iniconfig_file%')   do set COMPILE_SCRIPT=%%j  
 
     if not defined __target (
@@ -175,11 +181,7 @@ goto :init
 
     if "%__opt_verbose%" == "yes" (
         call %__lib_out% :__out_d_cya "%__script_name% v%__script_version%"
-        call %__lib_out% :__out_d_yel "PROJECT_NAME: %PROJECT_NAME%"
         call %__lib_out% :__out_d_grn "PROJECT_FILE: %PROJECT_FILE%"
-        call %__lib_out% :__out_d_grn "PROJECT_PATH: %PROJECT_PATH%"
-        call %__lib_out% :__out_d_mag "PROJECT_FULL_PATH: %PROJECT_FULL_PATH%"
-        call %__lib_out% :__out_l_red "COMPILE_SCRIPT: %COMPILE_SCRIPT%"
         ) 
     call :prebuild_header
     if %__log_file% == "" (
@@ -194,6 +196,9 @@ goto :init
         call :error_msbuild_failed %errorlevel%
         goto :eof
         )
+    if ! %__exportpath% == "" ( 
+        call :export 
+    )
     call :build_success
     goto :eof
 
@@ -223,6 +228,22 @@ goto :init
     for /f "tokens=2,*" %%A in ('REG.exe query %regpath%\%1 /v %2') do (
             set "__scripts_root=%%B"
         )
+    goto :eof
+
+:export
+    ::if not exist %__exportpath%  (md %__exportpath%)
+    set source_bin=%__bin_path%\%__platform%\%__configuration%
+    
+    If %__log_file% == "" (
+        call %__lib_out% :__out_d_red " ======================================================================="
+        call %__lib_out% :__out_l_red " EXPORT %source_bin% to %__exportpath%"
+        call %__lib_out% :__out_d_red " ======================================================================="
+    ) else (
+        echo " =======================================================================" >> %__log_file%
+        echo " EXPORT %source_bin% to %__exportpath%" >> %__log_file%
+        echo " =======================================================================" >> %__log_file%
+    )
+    copy %source_bin%\*.exe %__exportpath%
     goto :eof
 
 :: ==============================================================================
