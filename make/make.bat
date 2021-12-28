@@ -78,6 +78,7 @@ goto :init
     
     set "__lib_out=%__scripts_root%\batlibs\out.bat"
     set "__lib_date=%__scripts_root%\batlibs\date.bat"
+    call :header 
 :parse
     if "%~1"=="" goto :checklibs
 
@@ -196,7 +197,7 @@ goto :init
         call :error_msbuild_failed %errorlevel%
         goto :eof
         )
-    if ! %__exportpath% == "" ( 
+    if not %__exportpath% == "" ( 
         call :export 
     )
     call :build_success

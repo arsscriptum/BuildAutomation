@@ -98,8 +98,7 @@ goto :init
 ::   Build x64
 :: ==============================================================================
 :build_x64
-    ::call :call_make_build Debug x64
-    call :call_make_build_export Release x64 %EXPORT_PATH%
+    call :call_make_build_export Release x64 "c:\Programs\SystemTools"
     goto :eof
 
 :: ==============================================================================
