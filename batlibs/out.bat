@@ -205,6 +205,26 @@ goto :EOF
     echo [4m[91m%~1[0m[0m
     goto :eof
 
+:: ===========
+:: misc: underline
+:__out_underline_cya
+    echo [4m[36m%~1[0m[0m
+    goto :eof
+
+
+:: ===========
+:: misc: underline
+:__out_underline_mag
+    echo [4m[95m%~1[0m[0m
+    goto :eof
+
+
+:: ===========
+:: misc: underline
+:__out_underline_yel
+    echo [4m[33m%~1[0m[0m
+    goto :eof
+
 :: ==============================================================================
 ::   Test colors..
 :: ==============================================================================

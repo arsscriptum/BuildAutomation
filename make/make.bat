@@ -69,7 +69,7 @@ goto :init
 
     set "__scripts_root=%AutomationScriptsRoot%"
     call :read_script_root development\build-automation  BuildAutomation
-    echo Read scripts root from registry: %__scripts_root%
+   
 
     set "__iniconfig_file="
     set "__log_path=%__script_path%log"
@@ -78,7 +78,7 @@ goto :init
     
     set "__lib_out=%__scripts_root%\batlibs\out.bat"
     set "__lib_date=%__scripts_root%\batlibs\date.bat"
-    call :header 
+
 :parse
     if "%~1"=="" goto :checklibs
 
@@ -147,20 +147,20 @@ goto :init
 
     if not defined __target (
         FOR /F "tokens=1,2 delims==" %%i in ('findstr /I "DEFAULT_BUILD_TARGET" %__iniconfig_file%')   do set __target=%%j  
-        call %__lib_out% :__out_d_yel "[WARNING] TARGET Not specified on cmd line: Using default build TARGET from ini file."
+        call %__lib_out% :__out_n_l_gry "[WARNING] TARGET Not specified on cmd line: Using default build TARGET from ini file."
     )
     if not defined __configuration (
         FOR /F "tokens=1,2 delims==" %%i in ('findstr /I "DEFAULT_BUILD_CONFIGURATION" %__iniconfig_file%')   do set __configuration=%%j  
-        call %__lib_out% :__out_d_yel "[WARNING] Build CONFIGURATION Not specified on cmd line: Using default build CONFIGURATION from ini file."
+        call %__lib_out% :__out_n_l_gry "[WARNING] Build CONFIGURATION Not specified on cmd line: Using default build CONFIGURATION from ini file."
         )
     if not defined __platform (
         FOR /F "tokens=1,2 delims==" %%i in ('findstr /I "DEFAULT_BUILD_PLATFORM" %__iniconfig_file%')   do set __platform=%%j  
-        call %__lib_out% :__out_d_yel "[WARNING] PLATFORM Not specified on cmd line: Using default build PLATFORM from ini file."
+        call %__lib_out% :__out_n_l_gry "[WARNING] PLATFORM Not specified on cmd line: Using default build PLATFORM from ini file."
         )
     if %__log_file% == "" (
         FOR /F "tokens=1,2 delims==" %%i in ('findstr /I "BUILD_LOG_FILE" %__iniconfig_file%')   do set __log_file=%%j  
         if %__log_file% == "" (
-            call %__lib_out% :__out_d_yel "[WARNING] Log not specified on cmd line, but was in ini file."
+            call %__lib_out% :__out_n_l_gry "[WARNING] Log not specified on cmd line, but was in ini file."
             )
         )
 :validate
@@ -180,10 +180,6 @@ goto :init
     set PROJECT_FULL_PATH=%PROJECT_FILE_PATH%\%PROJECT_FILE%
     popd
 
-    if "%__opt_verbose%" == "yes" (
-        call %__lib_out% :__out_d_cya "%__script_name% v%__script_version%"
-        call %__lib_out% :__out_d_grn "PROJECT_FILE: %PROJECT_FILE%"
-        ) 
     call :prebuild_header
     if %__log_file% == "" (
         :: log undefined
@@ -197,7 +193,7 @@ goto :init
         call :error_msbuild_failed %errorlevel%
         goto :eof
         )
-    if not %__exportpath% == "" ( 
+    if not "%__exportpath%" == "" ( 
         call :export 
     )
     call :build_success
@@ -206,20 +202,13 @@ goto :init
 :prebuild_header
     If %__log_file% == "" (
         call %__lib_date% :getbuilddate
-        call %__lib_out% :__out_d_red " ======================================================================="
-        call %__lib_out% :__out_l_red " Compilation started for %PROJECT_NAME%"
-        call %__lib_out% :__out_d_yel %__build_date%
-        call %__lib_out% :__out_d_yel " Run configuration %__target% %__platform% / %__configuration%..."
-        call %__lib_out% :__out_d_red " ======================================================================="
+        call %__lib_out% :__out_underline_yel "Compilation => %__target% %__platform% / %__configuration%"
         goto :eof
     ) else (
         :: vuild output in log file
         call %__lib_date% :getbuilddate
-        echo " =======================================================================" >> %__log_file%
-        echo " Compilation started for %PROJECT_NAME%" >> %__log_file%
-        echo %__build_date% > %__log_file%
-        echo " Run configuration %__target% %__platform% / %__configuration%..." >> %__log_file%
-        echo " =======================================================================" >> %__log_file%
+        call %__lib_date% :getbuilddate
+        call %__lib_out% :__out_underline_yel "Compilation => %__target% %__platform% / %__configuration%"
         goto :eof
     )
     goto :eof
@@ -236,9 +225,7 @@ goto :init
     set source_bin=%__bin_path%\%__platform%\%__configuration%
     
     If %__log_file% == "" (
-        call %__lib_out% :__out_d_red " ======================================================================="
-        call %__lib_out% :__out_l_red " EXPORT %source_bin% to %__exportpath%"
-        call %__lib_out% :__out_d_red " ======================================================================="
+        call %__lib_out% :__out_underline_red "EXPORT %source_bin% to %__exportpath%"
     ) else (
         echo " =======================================================================" >> %__log_file%
         echo " EXPORT %source_bin% to %__exportpath%" >> %__log_file%
@@ -304,7 +291,7 @@ goto :init
 
 :build_success
     echo.
-    call %__lib_out% :__out_l_grn "   Build successfully completed!"
+    call %__lib_out% :__out_l_grn "Build Completed!"
     echo.
     goto :end
 
