@@ -63,9 +63,7 @@ goto :init
 
 :prebuild_header
     call %__lib_date% :getbuilddate
-    call %__lib_out% :__out_d_red " ======================================================================="
-    call %__lib_out% :__out_l_red " Compilation started for %cd%  %__target%"  
-    call %__lib_out% :__out_d_red " ======================================================================="
+    call %__lib_out% :__out_underline_red " Compilation started for %cd%  %__target%"  
     call :build
     goto :eof
 
@@ -79,26 +77,18 @@ goto :init
     call %__makefile% /v /i %__build_cfg% /t Build /c %config% /p %platform%
     goto :finished
 
-:call_make_build_export
-    set config=%1
-    set platform=%2
-    set export_path=%3
-    call %__makefile% /v /i %__build_cfg% /t Build /c %config% /p %platform% /x %export_path%
-    goto :finished
-
 :: ==============================================================================
 ::   Build static
 :: ==============================================================================
-:build_x86
+:build_x86_debug
     call :call_make_build Debug x86
-    call :call_make_build Release x86
     goto :eof
 
 :: ==============================================================================
 ::   Build x64
 :: ==============================================================================
-:build_x64
-    call :call_make_build_export Release x64 "c:\Programs\SystemTools"
+:build_Release
+    call :call_make_build ReleaseUnicode x64
     goto :eof
 
 :: ==============================================================================
@@ -112,21 +102,35 @@ goto :init
     goto :eof
 
 
+:protek
+	set APP_PATH=%cd%\bin\x64\Release
+	call %__lib_out% :__out_underline_cya "STEP 2) ENCRYPTION"
+	call %__lib_out% :__out_n_l_gry "    lecachotier.exe => lecachotier_p.exe"
+	"%AXPROTECTOR_SDK%\bin\AxProtector.exe" -x -kcm -f6000010 -p101001 -cf0 -d:6.20 -fw:3.00 -slw -nn -cav -cas100 -wu1000 -we100 -eac -eec -eusc1 -emc -v -cag23 -caa7 -o:"%APP_PATH%\lecachotier_p.exe" "%APP_PATH%\lecachotier.exe" > Nul
+	call %__lib_out% :__out_d_grn " SUCCESS"
+    dir .\bin\x64\Release\lecachotier_p.exe | findstr lecacho
+	goto :eof
+
+
 :: ==============================================================================
 ::   Build
 :: ==============================================================================
 :build
-	echo "%__target%"
 	if "%__target%" == "clean" (
 		call :clean
+
 		goto :finished
 		)
     if "%__target%" == "rebuild" (
 		call :clean
 		)
-    
+    if "%__target%" == "debug" (
+        call :build_x86_debug
+        goto :finished
+        )
     ::call :build_x86
-    call :build_x64
+    call :build_Release
+    ::call :protek
     goto :finished
 
 
