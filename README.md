@@ -22,4 +22,4 @@ identified in buildcfg.ini.
 
 ### Little visual demo
 
-<img alt='A visual demo ' src='https://github.com/arsscriptum/BuildAutomation/blob/main/doc/Build.gif' style='border: none' />
+<img alt='A visual demo ' src='https://github.com/arsscriptum/BuildAutomation/blob/master/doc/build.gif' style='border: none' />
