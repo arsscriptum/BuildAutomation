@@ -78,7 +78,9 @@ goto :init
     
     set "__lib_out=%__scripts_root%\batlibs\out.bat"
     set "__lib_date=%__scripts_root%\batlibs\date.bat"
-
+	for /f %%i in ('C:\\Programs\\Git\\cmd\\git.exe rev-parse HEAD') do (
+            set "__current_git_revision=%%i"
+        )
 
 :parse
     if "%~1"=="" goto :checklibs
@@ -173,6 +175,12 @@ goto :init
 :: ==============================================================================
 :build
     echo.
+	call %__lib_out% :__out_d_blu " ==================================================================" 
+	call %__lib_out% :__out_n_d_cya "  CURRENT GIT REVISION  "
+	call %__lib_out% :__out_d_whi "  %__current_git_revision% "
+	call %__lib_out% :__out_n_d_cya "  COMPILATION STARTED "
+	call %__lib_out% :__out_d_whi "    %__current_date_string% "
+	call %__lib_out% :__out_d_blu " ================================================================== "    
     pushd %PROJECT_PATH%
     set PROJECT_FILE_PATH=%cd%
     set PROJECT_FULL_PATH=%PROJECT_FILE_PATH%\%PROJECT_FILE%
@@ -222,9 +230,7 @@ goto :init
 :update_compilation_filetag
     set "source_bin=%__bin_path%\%__platform%\%__configuration%"
     set "tag_file=%source_bin%\BUILD.NFO"
-	for /f %%i in ('C:\\Programs\\Git\\cmd\\git.exe rev-parse HEAD') do (
-            set "__current_git_revision=%%i"
-        )
+
     if not exist %source_bin%  (
     	goto :eof
     	)	
@@ -232,7 +238,6 @@ goto :init
 	echo CURRENT GIT REVISION %__current_git_revision%  >> %tag_file%
 	echo COMPILATION COMPLETED ON %__current_date_string% >> %tag_file%
 	echo ========================================================== >> %tag_file%      
-	type %tag_file%
 
     goto :eof
 
