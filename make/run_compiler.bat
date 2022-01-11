@@ -8,7 +8,7 @@ setlocal EnableDelayedExpansion
 ::   VERSION:  1.0.1
 ::
 :: ==============================================================================
-::   codecastor - made in quebec 2020 <codecastor@icloud.com>
+::   arsccriptum - made in quebec 2020 <guillaumeplante.qc@gmail.com>
 :: ==============================================================================
 
 :: determine path to compiler

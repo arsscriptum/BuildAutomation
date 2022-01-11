@@ -9,7 +9,7 @@
 ::
 ::
 :: ==============================================================================
-::   codecastor - made in quebec 2020 <codecastor@icloud.com>
+::   arsccriptum - made in quebec 2020 <guillaumeplante.qc@gmail.com>
 :: ==============================================================================
 
 

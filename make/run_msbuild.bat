@@ -9,7 +9,7 @@ setlocal EnableDelayedExpansion
 ::
 ::
 :: ==============================================================================
-::   codecastor - made in quebec 2020 <codecastor@icloud.com>
+::   arsccriptum - made in quebec 2020 <guillaumeplante.qc@gmail.com>
 :: ==============================================================================
 
 goto :init
@@ -47,22 +47,18 @@ goto :init
     goto :eof
 
 :error_no_compiler_script
-    echo.
-    call %__lib_out% :__out_l_red "   %__script_name% Error"
-    call %__lib_out% :__out_d_yel  "   no compiler script: %~1"
-    echo.
+    call %__lib_out% :__out_n_d_red  "[Error] "
+    call %__lib_out% :__out_d_yel "no compiler script: %~1"  
     goto :eof
 
 :error_build_failed
-    echo.
-    call %__lib_out% :__out_l_red "   %__script_name% Error: compiler returned %~1"
-    echo.
+    call %__lib_out% :__out_n_d_red  "[Error] "
+    call %__lib_out% :__out_d_yel "%__script_name% Error: compiler returned %~1"
   	exit /B %ERRORLEVEL%
     goto :eof
 
 
 :exit_with_success
-    echo.
-    call %__lib_out% :__out_d_grn  " %__script_name% build was completed with success: %__solution_file% %__configuration% %__platform%"
-    echo.
+    call %__lib_out% :__out_n_d_grn  "[Success] "
+    call %__lib_out% :__out_l_gry  "%__script_name% build was completed with success: %__solution_file% %__configuration% %__platform%"
 	exit /B 0

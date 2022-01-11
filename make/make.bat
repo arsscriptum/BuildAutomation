@@ -13,7 +13,7 @@ setlocal EnableDelayedExpansion
 ::   VERSION:  1.0.1
 ::
 :: ==============================================================================
-::   codecastor - made in quebec 2020 <arsscriptum@icloud.com>
+::   arsccriptum - made in quebec 2020 <guillaumeplante.qc@gmail.com>
 :: ==============================================================================
 
 goto :init
@@ -78,6 +78,7 @@ goto :init
     
     set "__lib_out=%__scripts_root%\batlibs\out.bat"
     set "__lib_date=%__scripts_root%\batlibs\date.bat"
+
 
 :parse
     if "%~1"=="" goto :checklibs
@@ -159,9 +160,6 @@ goto :init
         )
     if %__log_file% == "" (
         FOR /F "tokens=1,2 delims==" %%i in ('findstr /I "BUILD_LOG_FILE" %__iniconfig_file%')   do set __log_file=%%j  
-        if %__log_file% == "" (
-            call %__lib_out% :__out_n_l_gry "[WARNING] Log not specified on cmd line, but was in ini file."
-            )
         )
 :validate
     if not exist %__iniconfig_file%  call :error_missing_iniconfig & goto :end
@@ -196,6 +194,7 @@ goto :init
     if not "%__exportpath%" == "" ( 
         call :export 
     )
+    call :update_compilation_filetag
     call :build_success
     goto :eof
 
@@ -219,6 +218,24 @@ goto :init
             set "__scripts_root=%%B"
         )
     goto :eof
+
+:update_compilation_filetag
+    set "source_bin=%__bin_path%\%__platform%\%__configuration%"
+    set "tag_file=%source_bin%\BUILD.NFO"
+	for /f %%i in ('C:\\Programs\\Git\\cmd\\git.exe rev-parse HEAD') do (
+            set "__current_git_revision=%%i"
+        )
+    if not exist %source_bin%  (
+    	goto :eof
+    	)	
+	echo ========================================================== > %tag_file%
+	echo CURRENT GIT REVISION %__current_git_revision%  >> %tag_file%
+	echo COMPILATION COMPLETED ON %__current_date_string% >> %tag_file%
+	echo ========================================================== >> %tag_file%      
+	type %tag_file%
+
+    goto :eof
+
 
 :export
     ::if not exist %__exportpath%  (md %__exportpath%)
@@ -295,10 +312,8 @@ goto :init
     echo.
     goto :end
 
-
-
 :end
     exit /B
 
 
-
+ 

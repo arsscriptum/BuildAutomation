@@ -6,7 +6,7 @@ goto :EOF
 ::   out.bat
 :: 
 :: ==============================================================================
-::   codecastor - made in quebec 2020 <codecastor@icloud.com>
+::   arsccriptum - made in quebec 2020 <guillaumeplante.qc@gmail.com>
 :: ==============================================================================
 
 :: ===========
@@ -185,7 +185,7 @@ goto :EOF
 :: ===========
 :: misc: underline no text
 :__out_line
-    echo [4m                                                                [0m
+    echo [4m                                                                                       [0m
     goto :eof
 :: ===========
 :: misc: underline
@@ -231,41 +231,24 @@ goto :EOF
 :test_colors
     echo.
     call :__out_line
-    call :__out_d_red "    THIS IS A TEST OF THE OUTPUT COLORS.... 1 2 3 4 5 6 7 8 9"
-    call :__out_d_grn "    THIS IS A TEST OF THE OUTPUT COLORS.... 1 2 3 4 5 6 7 8 9"
-    call :__out_d_yel "    THIS IS A TEST OF THE OUTPUT COLORS.... 1 2 3 4 5 6 7 8 9"
-    call :__out_d_blu "    THIS IS A TEST OF THE OUTPUT COLORS.... 1 2 3 4 5 6 7 8 9"
-    call :__out_d_mag "    THIS IS A TEST OF THE OUTPUT COLORS.... 1 2 3 4 5 6 7 8 9"
-    call :__out_d_cya "    THIS IS A TEST OF THE OUTPUT COLORS.... 1 2 3 4 5 6 7 8 9"
-    call :__out_d_whi "    THIS IS A TEST OF THE OUTPUT COLORS.... 1 2 3 4 5 6 7 8 9"
+    call :__out_d_red "    __out_d_red THIS IS A TEST OF THE OUTPUT COLORS.... 1 2 3 4 5 6 7 8 9"
+    call :__out_d_grn "    __out_d_grn THIS IS A TEST OF THE OUTPUT COLORS.... 1 2 3 4 5 6 7 8 9"
+    call :__out_d_yel "    __out_d_yel THIS IS A TEST OF THE OUTPUT COLORS.... 1 2 3 4 5 6 7 8 9"
+    call :__out_d_blu "    __out_d_blu THIS IS A TEST OF THE OUTPUT COLORS.... 1 2 3 4 5 6 7 8 9"
+    call :__out_d_mag "    __out_d_mag THIS IS A TEST OF THE OUTPUT COLORS.... 1 2 3 4 5 6 7 8 9"
+    call :__out_d_cya "    __out_d_cya THIS IS A TEST OF THE OUTPUT COLORS.... 1 2 3 4 5 6 7 8 9"
+    call :__out_d_whi "    __out_d_whi THIS IS A TEST OF THE OUTPUT COLORS.... 1 2 3 4 5 6 7 8 9"
 
-    call :__out_l_red "    THIS IS A TEST OF THE OUTPUT COLORS.... 1 2 3 4 5 6 7 8 9"
-    call :__out_l_grn "    THIS IS A TEST OF THE OUTPUT COLORS.... 1 2 3 4 5 6 7 8 9"
-    call :__out_l_yel "    THIS IS A TEST OF THE OUTPUT COLORS.... 1 2 3 4 5 6 7 8 9"
-    call :__out_l_blu "    THIS IS A TEST OF THE OUTPUT COLORS.... 1 2 3 4 5 6 7 8 9"
-    call :__out_l_mag "    THIS IS A TEST OF THE OUTPUT COLORS.... 1 2 3 4 5 6 7 8 9"
-    call :__out_l_cya "    THIS IS A TEST OF THE OUTPUT COLORS.... 1 2 3 4 5 6 7 8 9"
-    call :__out_l_whi "    THIS IS A TEST OF THE OUTPUT COLORS.... 1 2 3 4 5 6 7 8 9"
+    call :__out_l_red "    __out_l_red THIS IS A TEST OF THE OUTPUT COLORS.... 1 2 3 4 5 6 7 8 9"
+    call :__out_l_grn "    __out_l_grn THIS IS A TEST OF THE OUTPUT COLORS.... 1 2 3 4 5 6 7 8 9"
+    call :__out_l_yel "    __out_l_yel THIS IS A TEST OF THE OUTPUT COLORS.... 1 2 3 4 5 6 7 8 9"
+    call :__out_l_blu "    __out_l_blu THIS IS A TEST OF THE OUTPUT COLORS.... 1 2 3 4 5 6 7 8 9"
+    call :__out_l_mag "    __out_l_mag THIS IS A TEST OF THE OUTPUT COLORS.... 1 2 3 4 5 6 7 8 9"
+    call :__out_l_cya "    __out_l_cya THIS IS A TEST OF THE OUTPUT COLORS.... 1 2 3 4 5 6 7 8 9"
+    call :__out_l_whi "    __out_l_whi THIS IS A TEST OF THE OUTPUT COLORS.... 1 2 3 4 5 6 7 8 9"
     call :__out_underline "    THIS IS A TEST OF THE OUTPUT COLORS.... 1 2 3 4 5 6 7 8 9"
     echo.
     goto :eof
-
-
-:building
-    echo.
-    call %__lib_out% :__out_l grn " ,,                      ,,    ,,         ,,    ,,                        "
-    call %__lib_out% :__out_l_grn "*MM                      db    MM        `7MM    db                        "
-    call %__lib_out% :__out_l_grn " MM                            MM          MM                               "
-    call %__lib_out% :__out_l_grn " MM,dMMb.    MM    MM    MM    MM    ,M""bMM  `7MM  `7MMpMMMb.   .PYbmmm  "
-    call %__lib_out% :__out_l_grn " MM    `Mb   MM    MM    MM    MM  ,AP    MM    MM    MM    MM  :MI  I8    "
-    call %__lib_out% :__out_l_grn " MM     M8   MM    MM    MM    MM  8MI    MM    MM    MM    MM   WmmmP    "
-    call %__lib_out% :__out_l_grn " MM.   ,M9   MM    MM    MM    MM  `Mb    MM    MM    MM    MM  8M         " 
-    call %__lib_out% :__out_l_grn " P^YbmdP'    `Mbod YML..JMML..JMML. `Wbmd  MML..JMML..JMML  JMML. YMMMMMb   " 
-    call %__lib_out% :__out_l_grn "                                                                6     dP   "
-    call %__lib_out% :__out_l_grn "                                                                Ybmmmd'    "
-    echo.
-    goto :eof      
-
 
 
 ::

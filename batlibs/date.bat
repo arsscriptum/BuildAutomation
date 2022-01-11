@@ -7,7 +7,7 @@ goto :EOF
 ::   date.bat
 :: 
 :: ==============================================================================
-::   codecastor - made in quebec 2020 <codecastor@icloud.com>
+::   arsccriptum - made in quebec 2020 <guillaumeplante.qc@gmail.com>
 :: ==============================================================================
 
 :init
@@ -25,8 +25,15 @@ goto :EOF
 :getbuilddate
     call :init
     set __build_date=" %day%/%month% %year% at %hour%:%minute%:%second%"
+    set "__current_date_string=%day%/%month% %year% at %hour%:%minute%:%second%"
     goto :eof
     
 :getuniqueid
     echo %year%%month%%day%_%hour%%minute%%second%
+    goto :eof
+
+:printbuilddate
+    call :init
+    set __build_date=" %day%/%month% %year% at %hour%:%minute%:%second%"
+    echo %__build_date%
     goto :eof
