@@ -207,15 +207,15 @@ goto :init
     goto :eof
 
 :prebuild_header
+    set SPACE_SP=" "
     If %__log_file% == "" (
         call %__lib_date% :getbuilddate
-        call %__lib_out% :__out_underline_yel "Compilation %__target% %__platform% / %__configuration%"
+        call %__lib_out% :__out_underline_yel "Target: %__target% Platform: %__platform% Configuration: %__configuration%"
         goto :eof
     ) else (
         :: vuild output in log file
         call %__lib_date% :getbuilddate
-        call %__lib_date% :getbuilddate
-        call %__lib_out% :__out_underline_yel "Compilation %__target% %__platform% / %__configuration%"
+        call %__lib_out% :__out_underline_yel "%__target% %__platform% / %__configuration%"
         goto :eof
     )
     goto :eof
