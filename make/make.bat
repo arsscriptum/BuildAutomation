@@ -1,4 +1,4 @@
-@echo off
+    @echo off
 setlocal EnableDelayedExpansion
 
 :: ==============================================================================
@@ -209,13 +209,13 @@ goto :init
 :prebuild_header
     If %__log_file% == "" (
         call %__lib_date% :getbuilddate
-        call %__lib_out% :__out_underline_yel "Compilation => %__target% %__platform% / %__configuration%"
+        call %__lib_out% :__out_underline_yel "Compilation %__target% %__platform% / %__configuration%"
         goto :eof
     ) else (
         :: vuild output in log file
         call %__lib_date% :getbuilddate
         call %__lib_date% :getbuilddate
-        call %__lib_out% :__out_underline_yel "Compilation => %__target% %__platform% / %__configuration%"
+        call %__lib_out% :__out_underline_yel "Compilation %__target% %__platform% / %__configuration%"
         goto :eof
     )
     goto :eof

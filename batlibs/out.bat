@@ -28,6 +28,15 @@ goto :EOF
 :__out_n_d_red
     call :write "[31m%~1[0m"
     goto :eof
+
+
+:: ===========
+:: dark red
+:__out_n_d_red_u
+    call :write "[4m[91m%~1[0m[0m"
+    goto :eof
+
+
 :: ===========
 :: dark green
 :__out_n_d_grn
@@ -38,6 +47,13 @@ goto :EOF
 :__out_n_d_yel
     call :write "[33m%~1[0m"
     goto :eof
+
+:: ===========
+:: dark yellow
+:__out_n_d_yel_u
+    call :write "[4m[33m%~1[0m[0m"
+    goto :eof
+
 :: ===========
 :: dark blue
 :__out_n_d_blu
