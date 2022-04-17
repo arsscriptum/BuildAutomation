@@ -51,6 +51,7 @@ $Script:CurrentRunningScript           = $Script:CurrentScript
 $Script:Time                           = Get-Date
 $Script:Date                           = $Time.GetDateTimeFormats()[19]
 $Script:DejaRootPath                   = Join-Path $Script:DevelopmentRoot "DejaInsight"
+$Script:NetlibRootPath                   = Join-Path $Script:DevelopmentRoot "netlib"
 $Script:DejaLibsPath                   = Join-Path $Script:DejaRootPath "lib"
 $Script:DejaIncsPath                   = Join-Path $Script:DejaRootPath "include"
 $Script:BuildAutomation                = Join-Path $Script:DevelopmentRoot "BuildAutomation"
@@ -76,18 +77,29 @@ Write-Host "====================================================================
 
 $Script:RegPathAuto="$ENV:OrganizationHKCU\development\build-automation"
 $Script:RegPathDeja="$ENV:OrganizationHKCU\development\dejainsight"
+$Script:RegPathNetlib="$ENV:OrganizationHKCU\development\netlib"
 Write-Host "[REGISTRY] " -f DarkRed -NonewLine
 Write-Host " build-automation" -f DarkYellow
 if((Get-Item -Path $Script:RegPathAuto -ErrorAction ignore) -eq $null){
     Write-Host " (o) " -f DarkRed -NoNewLine
     (New-Item -Path $Script:RegPathAuto -Force).Name
 }
+if((Get-Item -Path $Script:RegPathDeja -ErrorAction ignore) -eq $null){
+    Write-Host " (o) " -f DarkRed -NoNewLine
+    (New-Item -Path $Script:RegPathDeja -Force).Name
+}
 
+if((Get-Item -Path $Script:RegPathNetlib -ErrorAction ignore) -eq $null){
+    Write-Host " (o) " -f DarkRed -NoNewLine
+    (New-Item -Path $Script:RegPathNetlib -Force).Name
+}
 Write-Host " (o) " -f DarkRed -NoNewLine ; (New-ItemProperty -Path $Script:RegPathAuto -Name "DevelopmentRoot" -Value $Script:DevelopmentRoot -Force).PSPath
 Write-Host " (o) " -f DarkRed -NoNewLine ; (New-ItemProperty -Path $Script:RegPathAuto -Name "BuildAutomation" -Value $Script:BuildAutomation -Force).PSPath   
 Write-Host " (o) " -f DarkRed -NoNewLine ; (New-ItemProperty -Path $Script:RegPathDeja -Name "SdkDirectory" -Value $Script:DejaRootPath -Force).PSPath   
 Write-Host " (o) " -f DarkRed -NoNewLine ; (New-ItemProperty -Path $Script:RegPathDeja -Name "Sdk_Incs" -Value $Script:DejaIncsPath -Force).PSPath 
 Write-Host " (o) " -f DarkRed -NoNewLine ; (New-ItemProperty -Path $Script:RegPathDeja -Name "Sdk_Libs" -Value $Script:DejaLibsPath -Force).PSPath
+
+Write-Host " (o) " -f DarkRed -NoNewLine ; (New-ItemProperty -Path $Script:RegPathNetlib -Name "SdkDirectory" -Value $Script:NetlibRootPath -Force).PSPath   
 
 function SetSystemValue{
     [CmdletBinding(SupportsShouldProcess)]

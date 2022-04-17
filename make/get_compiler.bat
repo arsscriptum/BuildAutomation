@@ -16,7 +16,7 @@
 set __compiler_exe=
 set __compiler_displayname=
 
-goto try_vs19
+goto try_vs19_pro
 
 rem ## Try to get the MSBuild 15 path using vswhere (see https://github.com/Microsoft/vswhere). VS2019 preview puts the executable in a "Current" subfolder.
 if not exist "%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" goto no_vswhere
@@ -27,7 +27,7 @@ for /f "delims=" %%i in ('"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer
 	)
 	if exist "%%i\MSBuild\15.0\Bin\MSBuild.exe" (
 		set __compiler_exe="%%i\MSBuild\15.0\Bin\MSBuild.exe"
-                set __compiler_displayname="
+                set __compiler_displayname=""
 		goto Succeeded
 	)
 )
@@ -38,8 +38,13 @@ rem ## Check for MSBuild 15. This is installed alongside Visual Studio 2017, so 
 call :ReadInstallPath Microsoft\VisualStudio\SxS\VS7 15.0 MSBuild\15.0\bin\MSBuild.exe
 if not errorlevel 1 goto Succeeded
 
+:try_vs19_pro
+if exist "%VS2019_MSBUILD%" (
+	set __compiler_exe="%VS2019_MSBUILD%"
+	goto Succeeded
+)
 
-:try_vs19
+:try_vs19_free
 rem ## Try to get the MSBuild 14.0 path directly (see https://msdn.microsoft.com/en-us/library/hh162058(v=vs.120).aspx)
 
 if exist "%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\MSBuild.exe" (
